@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>IE Day 1 Quiz - Problem Areas</title>
+<style>
+:root{--bg1:#1d4ed8;--bg2:#7c3aed;--card:#ffffff;--text:#172033;--muted:#667085;--good:#16a34a;--bad:#dc2626;--accent:#f59e0b;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{-webkit-text-size-adjust:100%;}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));min-height:100vh;color:var(--text);display:flex;align-items:center;justify-content:center;padding:18px;}
+.app{width:min(920px,100%);background:rgba(255,255,255,.96);border-radius:28px;box-shadow:0 24px 80px rgba(0,0,0,.25);overflow:hidden;}
+.hero{padding:26px 28px;background:linear-gradient(135deg,#fff7ed,#eff6ff);border-bottom:1px solid #e5e7eb;}
+.badge{display:inline-block;background:#111827;color:white;border-radius:999px;padding:8px 12px;font-size:13px;letter-spacing:.3px;}
+h1{font-size:clamp(28px,5vw,46px);margin:14px 0 8px;line-height:1.05;}
+.subtitle{color:var(--muted);font-size:18px;line-height:1.45;margin:0;}
+.main{padding:24px 28px 28px;}
+.progressWrap{height:14px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:8px 0 20px;}
+.progress{height:100%;width:0;background:linear-gradient(90deg,#22c55e,#f59e0b);transition:.35s;}
+.qtop{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px;}
+.counter{font-weight:700;color:#1d4ed8;}
+.scorepill{background:#fef3c7;padding:8px 12px;border-radius:999px;font-weight:700;}
+.question{font-size:clamp(22px,4.2vw,34px);font-weight:800;line-height:1.18;margin:14px 0 22px;}
+.options{display:grid;grid-template-columns:1fr;gap:12px;}
+button{border:0;border-radius:18px;padding:16px 18px;font-size:18px;font-weight:700;cursor:pointer;transition:.15s;touch-action:manipulation;-webkit-appearance:none;appearance:none;}
+.option{text-align:left;background:#f8fafc;border:2px solid #e5e7eb;color:#111827;}
+.option:active{transform:scale(.99);border-color:#93c5fd;background:#eff6ff;}
+.option.correct{background:#dcfce7;border-color:#22c55e;}
+.option.wrong{background:#fee2e2;border-color:#ef4444;}
+.feedback{margin-top:18px;padding:16px 18px;border-radius:18px;background:#f1f5f9;font-size:17px;line-height:1.45;display:none;}
+.feedback.good{border-left:8px solid var(--good);}
+.feedback.bad{border-left:8px solid var(--bad);}
+.controls{display:flex;gap:12px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap;}
+.next{background:#1d4ed8;color:white;}
+.restart{background:#111827;color:white;}
+.start{background:#f59e0b;color:#111827;margin-top:20px;font-size:20px;padding:17px 22px;}
+.result{display:none;text-align:center;padding:18px;}
+.big{font-size:64px;margin:8px;}
+.small{font-size:16px;color:var(--muted);}
+.footer{padding:14px 28px;color:#64748b;font-size:13px;text-align:center;border-top:1px solid #e5e7eb;}
+@media (min-width:700px){.options{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <span class="badge">Industrial Engineering Mission #1</span>
+    <h1>IE Problem Areas Quiz</h1>
+    <p class="subtitle">Make decisions, beat constraints, and discover how IE hides inside everyday life.</p>
+    <button class="start" id="startBtn" type="button">Start the Mission 🚀</button>
+  </div>
+  <div class="main" id="quiz" style="display:none">
+    <div class="qtop"><div class="counter" id="counter"></div><div class="scorepill" id="scorepill">Score: 0</div></div>
+    <div class="progressWrap"><div class="progress" id="progress"></div></div>
+    <div class="question" id="question"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="controls"><button class="next" id="nextBtn" type="button" style="display:none">Next Question ➜</button></div>
+  </div>
+  <div class="result" id="result">
+    <div class="big" id="emoji">🏆</div>
+    <h1 id="resultTitle">Mission Complete!</h1>
+    <p id="resultText"></p>
+    <button class="restart" id="restartBtn" type="button">Play Again 🔁</button>
+  </div>
+  <div class="footer">Tip: Industrial Engineering = better systems through decisions, data, and constraints.</div>
+</div>
+<script>
+(function(){
+  var questions = [
+    {q:"Your favorite ice cream reaches a market. Which flow is NOT normally part of a supply chain?",opts:["Goods moving from factory to warehouse","Information about demand","Money paid by customers","The teacher choosing your seat"],a:3,why:"Supply chains include goods, information, and money. Classroom seating is a decision system, but not part of this ice-cream supply chain."},
+    {q:"A delivery van has 20 customers. Why might “go to the nearest customer next” be a bad rule?",opts:["It always gives the mathematical optimum","It may ignore time windows, capacity, and later customers","It is illegal","It makes the van disappear"],a:1,why:"Nearest-next is simple, but it can trap the route into a bad overall plan."},
+    {q:"In production planning, which question is most central?",opts:["What color should the manager wear?","How many likes did the product get?","What, when, and how much should we produce?","Can we avoid all planning?"],a:2,why:"Production planning coordinates timing, quantity, resources, and demand."},
+    {q:"A warehouse robot packs boxes into a truck. What is the IE goal?",opts:["Use space well and reduce cost/damage","Make the boxes look lonely","Always put tiny boxes first","Ignore the destination"],a:0,why:"Good packing improves space utilization, safety, and delivery efficiency."},
+    {q:"For the Algida factory location case, “factory capacity is at most 10,000 units/day” is a...",opts:["Decision variable","Constraint","Joke","Source citation"],a:1,why:"A constraint is a limit or rule that the solution must respect."},
+    {q:"For the same factory location case, “choose where to open a factory” is a...",opts:["Parameter","Historical event","Customer complaint","Decision"],a:3,why:"A decision is something the planner can choose or control."},
+    {q:"A supermarket places popular products far from the entrance. What might be the reason?",opts:["The products are afraid of sunlight","The entrance is allergic to milk","Customers pass more products and may buy more","No planning is involved"],a:2,why:"Retail layout can influence customer movement and purchasing behavior."},
+    {q:"If the inventory system says 10 laptops exist but the shelf has zero, what is the problem?",opts:["Bad information can cause bad decisions","The laptops are optimizing themselves","Demand forecasting becomes magic","Nothing; data never matters"],a:0,why:"Information systems must be accurate; wrong data leads to wrong plans."},
+    {q:"Railway planning is difficult mainly because...",opts:["Trains hate mathematics","Only one train exists","Schedules, crews, locomotives, terminals, and capacity are connected","Rails move every hour"],a:2,why:"Railways are interconnected systems; one decision affects many others."},
+    {q:"Choosing an energy resource is a multi-criteria decision because...",opts:["There is only one obvious answer","Cost, environment, reliability, and setup time may conflict","Criteria are forbidden","Energy decisions never use data"],a:1,why:"MCDM helps compare options when several criteria matter at the same time."},
+    {q:"Six degrees of separation is related to which IE-friendly idea?",opts:["Packing boxes into trucks","Making ice cream colder","Changing font size","Networks of connections between people"],a:3,why:"Social networks can be studied as nodes and links, similar to transportation or communication networks."},
+    {q:"Big final boss question: What do most IE problem areas have in common?",opts:["They improve systems using decisions, data, and constraints","They only happen in factories","They avoid mathematics completely","They are only about drawing nice diagrams"],a:0,why:"IE is about systems thinking: model the system, use data, respect limits, and improve decisions."}
+  ];
+  var i=0, score=0, locked=false;
+  var startBtn=document.getElementById('startBtn');
+  var quiz=document.getElementById('quiz');
+  var result=document.getElementById('result');
+  var nextBtn=document.getElementById('nextBtn');
+  var restartBtn=document.getElementById('restartBtn');
+  function setText(id, txt){document.getElementById(id).textContent=txt;}
+  function showQ(){
+    locked=false;
+    var q=questions[i];
+    setText('counter','Question '+(i+1)+' / '+questions.length);
+    setText('scorepill','Score: '+score);
+    document.getElementById('progress').style.width=(i/questions.length*100)+'%';
+    setText('question',q.q);
+    var opts=document.getElementById('options');
+    opts.innerHTML='';
+    document.getElementById('feedback').style.display='none';
+    nextBtn.style.display='none';
+    for(var idx=0; idx<q.opts.length; idx++){
+      var b=document.createElement('button');
+      b.className='option';
+      b.type='button';
+      b.textContent=['A. ','B. ','C. ','D. '][idx]+q.opts[idx];
+      (function(optionIndex, buttonEl){
+        buttonEl.addEventListener('click', function(){ answer(optionIndex, buttonEl); }, false);
+      })(idx,b);
+      opts.appendChild(b);
+    }
+  }
+  function answer(idx,btn){
+    if(locked){return;}
+    locked=true;
+    var q=questions[i];
+    var buttons=document.querySelectorAll('.option');
+    for(var k=0;k<buttons.length;k++){if(k===q.a){buttons[k].className+=' correct';}}
+    var fb=document.getElementById('feedback');
+    fb.style.display='block';
+    if(idx===q.a){score++; btn.className+=' correct'; fb.className='feedback good'; fb.innerHTML='✅ Correct! '+q.why;}
+    else{btn.className+=' wrong'; fb.className='feedback bad'; fb.innerHTML='🤔 Not quite. '+q.why;}
+    setText('scorepill','Score: '+score);
+    nextBtn.style.display='inline-block';
+  }
+  function finish(){
+    quiz.style.display='none';
+    result.style.display='block';
+    document.getElementById('progress').style.width='100%';
+    var pct=Math.round(score/questions.length*100), title, emoji;
+    if(pct>=90){title='IE Mastermind!'; emoji='🏆';}
+    else if(pct>=70){title='System Solver!'; emoji='🚀';}
+    else if(pct>=50){title='Good Start!'; emoji='🛠️';}
+    else{title='Mission Retry Recommended!'; emoji='🧭';}
+    setText('emoji',emoji);
+    setText('resultTitle',title);
+    document.getElementById('resultText').innerHTML='You scored <b>'+score+' / '+questions.length+'</b> ('+pct+'%).<br>Remember: IE improves systems with decisions, data, and constraints.';
+  }
+  function restart(){i=0;score=0;result.style.display='none';quiz.style.display='block';showQ();}
+  startBtn.addEventListener('click',function(){startBtn.style.display='none'; quiz.style.display='block'; showQ();},false);
+  nextBtn.addEventListener('click',function(){i++; if(i<questions.length){showQ();} else{finish();}},false);
+  restartBtn.addEventListener('click',restart,false);
+})();
+</script>
+</body>
+</html>
