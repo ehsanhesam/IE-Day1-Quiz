@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>IE Day 1 Quiz - Problem Areas</title>
+<title>IE Day 1 Quiz - Problem Areas (No Answer Reveal)</title>
 <style>
 :root{--bg1:#1d4ed8;--bg2:#7c3aed;--card:#ffffff;--text:#172033;--muted:#667085;--good:#16a34a;--bad:#dc2626;--accent:#f59e0b;}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -65,7 +65,7 @@ button{border:0;border-radius:18px;padding:16px 18px;font-size:18px;font-weight:
     <p id="resultText"></p>
     <button class="restart" id="restartBtn" type="button">Play Again 🔁</button>
   </div>
-  <div class="footer">Tip: Industrial Engineering = better systems through decisions, data, and constraints.</div>
+  <div class="footer">Tip: Feedback shows only Correct or Incorrect. Industrial Engineering = better systems through decisions, data, and constraints.</div>
 </div>
 <script>
 (function(){
@@ -116,15 +116,22 @@ button{border:0;border-radius:18px;padding:16px 18px;font-size:18px;font-weight:
     if(locked){return;}
     locked=true;
     var q=questions[i];
-    var buttons=document.querySelectorAll('.option');
-    for(var k=0;k<buttons.length;k++){if(k===q.a){buttons[k].className+=' correct';}}
     var fb=document.getElementById('feedback');
     fb.style.display='block';
-    if(idx===q.a){score++; btn.className+=' correct'; fb.className='feedback good'; fb.innerHTML='✅ Correct! '+q.why;}
-    else{btn.className+=' wrong'; fb.className='feedback bad'; fb.innerHTML='🤔 Not quite. '+q.why;}
+    if(idx===q.a){
+      score++;
+      btn.className+=' correct';
+      fb.className='feedback good';
+      fb.innerHTML='✅ Correct!';
+    } else {
+      btn.className+=' wrong';
+      fb.className='feedback bad';
+      fb.innerHTML='❌ Incorrect.';
+    }
     setText('scorepill','Score: '+score);
     nextBtn.style.display='inline-block';
   }
+
   function finish(){
     quiz.style.display='none';
     result.style.display='block';
@@ -146,4 +153,3 @@ button{border:0;border-radius:18px;padding:16px 18px;font-size:18px;font-weight:
 </script>
 </body>
 </html>
-
